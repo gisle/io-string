@@ -103,7 +103,7 @@ sub ungetc
 sub eof
 {
     my $self = shift;
-    length(${*$self->{buf}}) >= *$self->{pos};
+    length(${*$self->{buf}}) <= *$self->{pos};
 }
 
 sub print
