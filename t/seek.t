@@ -15,7 +15,11 @@ sub all_pos
    $io->tell   == $expect &&
    $io->seek(0, 1) == $expect &&
    $io->sysseek(0, 1) == $expect &&
-   1;
+   $] >= 5.006 ? ( tell($io) == $expect &&
+      	           seek($io, 0, 1) == $expect &&
+                   sysseek($io, 0, 1) == $expect
+                 )
+               : 1;
 }
 
 print "not " unless all_pos($io, 0);
