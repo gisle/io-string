@@ -3,9 +3,6 @@ or write data from in-core strings.  It is really just a
 simplification of what I needed from Eryq's IO-stringy modules.  As
 such IO::String is a replacement for IO::Scalar.
 
-This module requires perl5.005_03 or better because it works best with
-Chip's no-memory-leak-on-self-tie-patch.
-
 Installation as usual:
 
    perl Makefile.PL
@@ -16,7 +13,7 @@ Installation as usual:
 Documentation is embedded in the module.
 
 
-Copyright 1998-2000 Gisle Aas.  <gisle@aas.no>
+Copyright 1998-2002 Gisle Aas.  <gisle@aas.no>
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

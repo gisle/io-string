@@ -1,6 +1,15 @@
+2002-12-27   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.02
+
+   Complemented the tiehandle interface with SEEK/TELL/EOF/BINMODE
+   and OPEN.
+
+
+
 2000-01-28   Gisle Aas <gisle@aas.no>
 
-   Releaes 1.01
+   Release 1.01
 
    The eof() method had oposite logic.  Bug spotted by
    Daniel Gruhl <dgruhl@almaden.ibm.com>
