@@ -1,3 +1,15 @@
+1998-10-12   Gisle Aas <aas@sn.no>
+
+   Release 0.02
+
+   Added some documentation.
+
+   Fixed $io->stat
+
+   Fixed $io->pad to return the default if it is set to ""
+
+
+
 1998-10-07   Gisle Aas <aas@sn.no>
 
    Release 0.01
