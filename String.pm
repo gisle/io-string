@@ -435,26 +435,26 @@ IO::String - Emulate file interface for in-core strings
 
 =head1 DESCRIPTION
 
-The C<IO::String> module provide the C<IO::File> interface for in-core
+The C<IO::String> module provides the C<IO::File> interface for in-core
 strings.  An C<IO::String> object can be attached to a string, and
-will make it possible to use the normal file operations for reading or
-writing data, as well as seeking to various locations of the string.
-This is useful when you want to use a library module, that only
-provide an interface to file handles, on data you have in a string
+makes it possible to use the normal file operations for reading or
+writing data, as well as for seeking to various locations of the string.
+This is useful when you want to use a library module that only
+provides an interface to file handles on data that you have in a string
 variable.
 
-Note that perl-5.8 and better has built in support for "in memory"
-files.  These are set up by passing a reference instead of a filename
-to the open() call, so the reason to still use this module is that it
-makes the code backwards compatible to older versions of perl.
+Note that perl-5.8 and better has built-in support for "in memory"
+files, which are set up by passing a reference instead of a filename
+to the open() call. The reason for using this module is that it
+makes the code backwards compatible with older versions of Perl.
 
-The C<IO::String> module provide an interface compatible with
+The C<IO::String> module provides an interface compatible with
 C<IO::File> as distributed with F<IO-1.20>, but the following methods
-are not available; new_from_fd, fdopen, format_write,
+are not available: new_from_fd, fdopen, format_write,
 format_page_number, format_lines_per_page, format_lines_left,
 format_name, format_top_name.
 
-The following methods are specific for the C<IO::String> class:
+The following methods are specific to the C<IO::String> class:
 
 =over 4
 
@@ -462,26 +462,26 @@ The following methods are specific for the C<IO::String> class:
 
 =item $io = IO::String->new( $string )
 
-The constructor returns a newly created C<IO::String> object.  It
-takes an optional argument which is the string to read from or write
+The constructor returns a newly-created C<IO::String> object.  It
+takes an optional argument, which is the string to read from or write
 into.  If no $string argument is given, then an internal buffer
 (initially empty) is allocated.
 
-The C<IO::String> object returned will be tied to itself.  This means
-that you can use most perl IO builtins on it too; readline, <>, getc,
+The C<IO::String> object returned is tied to itself.  This means
+that you can use most Perl I/O built-ins on it too: readline, <>, getc,
 print, printf, syswrite, sysread, close.
 
 =item $io->open
 
 =item $io->open( $string )
 
-Attach an existing IO::String object to some other $string, or
-allocate a new internal buffer (if no argument is given).  The
-position is reset back to 0.
+Attaches an existing IO::String object to some other $string, or
+allocates a new internal buffer (if no argument is given).  The
+position is reset to 0.
 
 =item $io->string_ref
 
-This method will return a reference to the string that is attached to
+Returns a reference to the string that is attached to
 the C<IO::String> object.  Most useful when you let the C<IO::String>
 create an internal buffer to write into.
 
@@ -489,7 +489,7 @@ create an internal buffer to write into.
 
 =item $io->pad( $char )
 
-The pad() method makes it possible to specify the padding to use if
+Specifies the padding to use if
 the string is extended by either the seek() or truncate() methods.  It
 is a single character and defaults to "\0".
 
@@ -499,23 +499,23 @@ is a single character and defaults to "\0".
 
 Yet another interface for reading and setting the current read/write
 position within the string (the normal getpos/setpos/tell/seek
-methods are also available).  The pos() method will always return the
-old position, and if you pass it an argument it will set the new
+methods are also available).  The pos() method always returns the
+old position, and if you pass it an argument it sets the new
 position.
 
 There is (deliberately) a difference between the setpos() and seek()
-methods in that seek() will extend the string (with the specified
-padding) if you go to a location past the end, while setpos() will
-just snap back to the end.  If truncate() is used to extend the string,
+methods in that seek() extends the string (with the specified
+padding) if you go to a location past the end, whereas setpos()
+just snaps back to the end.  If truncate() is used to extend the string,
 then it works as seek().
 
 =back
 
 =head1 BUGS
 
-The perl version < 5.6 the TIEHANDLE interface was still not complete.
-If you use such a perl seek(), tell(), eof(), fileno(), binmode() will
-not do anything on a C<IO::String> handle.  See L<perltie> for
+In Perl versions < 5.6, the TIEHANDLE interface was incomplete.
+If you use such a Perl, then seek(), tell(), eof(), fileno(), binmode() will
+not do anything on an C<IO::String> handle.  See L<perltie> for
 details.
 
 =head1 SEE ALSO
