@@ -1,0 +1,2 @@
+IO::String is a IO::Handle compatible class that read or write data
+from in-core strings.
