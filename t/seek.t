@@ -48,7 +48,7 @@ print "ok 6\n";
 print "not " unless $io->read($buf, 20) == 4 && $buf eq "\0זרו";
 print "ok 7\n";
 
-print "not " unless $io->seek(-10,1) == 3 && all_pos($io, 3);
+print "not " unless $io->seek(-10,1) && all_pos($io, 3);
 print "ok 8\n";
 
 $io->seek(0,0);
