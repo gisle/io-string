@@ -1,6 +1,11 @@
 package IO::String;
-require 5.005;      # actually 5.005_03 if Chip's tie patch goes in
 
+# Copyright 1998 Gisle Aas.
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the same terms as Perl itself.
+
+require 5.005;      # actually 5.005_03 if Chip's tie patch goes in
 use strict;
 use vars qw($VERSION $DEBUG);
 $VERSION = "0.01";  # $Date$
@@ -78,10 +83,8 @@ sub close
 sub opened
 {
     my $self = shift;
-    defined *$self->{buf};  # exists *$self->{buf};
+    defined *$self->{buf};
 }
-
-sub fileno { undef }
 
 sub getc
 {
@@ -162,11 +165,13 @@ sub pos
     $old;
 }
 
+sub getpos { shift->pos; }
 
 *sysseek = \&seek;
-*tell    = \&pos;
 *setpos  = \&pos;
-*getpos  = \&pos;
+*tell    = \&getpos;
+
+
 
 sub getline
 {
@@ -214,19 +219,24 @@ sub getline
 sub getlines
 {
     die "getlines() called in scalar context\n" unless wantarray;
-    goto &READLINE;
+    my $self = shift;
+    my($line, @lines);
+    push(@lines, $line) while defined($line = $self->getline);
+    return @lines;
 }
 
 sub READLINE
 {
-    if (wantarray) {
-	my $self = shift;
-	my @lines;
-	my $line;
-	push(@lines, $line) while defined($line = $self->getline);
-	return @lines;
-    }
+    goto &getlines if wantarray;
     goto &getline;
+}
+
+sub input_line_number
+{
+    my $self = shift;
+    my $old = *$self->{lno};
+    *$self->{lno} = shift if @_;
+    $old;
 }
 
 sub truncate
@@ -324,6 +334,8 @@ sub blocking {
 }
 
 my $notmuch = sub { return };
+
+*fileno    = $notmuch;
 *error     = $notmuch;
 *clearerr  = $notmuch; 
 *sync      = $notmuch;
@@ -336,12 +348,12 @@ my $notmuch = sub { return };
 *fcntl     = $notmuch;
 *ioctl     = $notmuch;
 
-*GETC = \&getc;
-*PRINT = \&print;
+*GETC   = \&getc;
+*PRINT  = \&print;
 *PRINTF = \&printf;
-*READ = \&read;
-*WRITE = \&write;
-*CLOSE = \&close;
+*READ   = \&read;
+*WRITE  = \&write;
+*CLOSE  = \&close;
 
 sub string_ref
 {
