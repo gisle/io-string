@@ -386,8 +386,6 @@ my $notmuch = sub { return };
 
 *BINMODE = $notmuch;
 
-# This does not feel correct.
-#*OPEN   = \&open;
 
 sub string_ref
 {

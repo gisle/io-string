@@ -2,8 +2,7 @@
 
    Release 1.02
 
-   Complemented the tiehandle interface with SEEK/TELL/EOF/BINMODE
-   and OPEN.
+   Complemented the tiehandle interface with SEEK/TELL/EOF/BINMODE.
 
 
 
