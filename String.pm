@@ -8,7 +8,7 @@ package IO::String;
 require 5.005;      # actually 5.005_03 if Chip's tie patch goes in
 use strict;
 use vars qw($VERSION $DEBUG);
-$VERSION = "0.01";  # $Date$
+$VERSION = "0.02";  # $Date$
 
 use Symbol ();
 
@@ -44,7 +44,7 @@ sub pad
     my $self = shift;
     my $old = *$self->{pad};
     *$self->{pad} = substr($_[0], 0, 1) if @_;
-    return "\0" unless defined $old;
+    return "\0" unless defined($old) && length($old);
     $old;
 }
 
@@ -366,3 +366,80 @@ sub string_ref
 *sref = \&string_ref;
 
 1;
+
+__END__
+
+=head1 NAME
+
+IO::String - Emulate IO::File interface for in-core strings
+
+=head1 SYNOPSIS
+
+ use IO::String;
+ $io = IO::String->new;
+ $io = IO::String->new($var);
+ tie *IO, 'IO::String';
+
+ # read data
+ <$io>;
+ $io->getline;
+ read($io, $buf, 100);
+
+ # write data
+ print $io "string\n";
+ $io->print(@data);
+ syswrite($io, $buf, 100);
+
+ select $io;
+ printf "Some text %s\n", $str;
+
+ # seek
+ $pos = $io->getpos;
+ $io->setpos(0);        # rewind
+ $io->seek(-30, -1);
+
+=head1 DESCRIPTION
+
+The C<IO::String> module provide the C<IO::File> interface for in-core
+strings.  An C<IO::String> object can be attached to a string, and
+will make it possible to use the normal file operations for reading or
+writing data, as well as seeking to various locations of the string.
+
+The string_ref() method will return a reference to the string that is
+attached to the C<IO::String> object.  Mainly useful when you let the
+C<IO::String> create an internal buffer to write into.
+
+There is a difference between the setpos() and seek() methods in that
+seek() will extend the string (with the specified padding) if you go
+to a location past the end, while setpos() will just snap back to the
+end.
+
+The pad() method makes it possible to specify the padding to use if
+the string is extended by either the seek() or truncate() methods.  It
+is a single character and defaults to "\0".
+
+In addition to getpos/setpos/tell/seek you can also use the pos()
+method to both set and get the current position within the string.
+
+The C<IO::String> module provide an interface compatible with
+C<IO::File> as distributed with F<IO-1.20>.  The following methods are
+not available: new_from_fd, fdopen, format_write, format_page_number,
+format_lines_per_page, format_lines_left, format_name,
+format_top_name.
+
+The new() and the open() methods take different parameters since we
+open strings instead of file names.  The write() and syswrite() method
+allow the length parameter to be left out.
+
+=head1 SEE ALSO
+
+L<IO::File>, L<IO::Stringy>
+
+=head1 COPYRIGHT
+
+Copyright 1998 Gisle Aas.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+=cut
