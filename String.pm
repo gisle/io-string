@@ -22,7 +22,9 @@ sub open
     return $self->new(@_) unless ref($self);
 
     if (@_) {
-	*$self->{buf} = ref($_[0]) ? $_[0] : \$_[0];
+	my $bufref = ref($_[0]) ? $_[0] : \$_[0];
+	$$bufref = "" unless defined $$bufref;
+	*$self->{buf} = $bufref;
     } else {
 	my $buf = "";
 	*$self->{buf} = \$buf;
@@ -321,7 +323,7 @@ sub blocking {
     $old;
 }
 
-my $notmuch = sub { return }
+my $notmuch = sub { return };
 *error     = $notmuch;
 *clearerr  = $notmuch; 
 *sync      = $notmuch;
