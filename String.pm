@@ -405,7 +405,7 @@ __END__
 
 =head1 NAME
 
-IO::String - Emulate IO::File interface for in-core strings
+IO::String - Emulate file interface for in-core strings
 
 =head1 SYNOPSIS
 
@@ -439,9 +439,14 @@ The C<IO::String> module provide the C<IO::File> interface for in-core
 strings.  An C<IO::String> object can be attached to a string, and
 will make it possible to use the normal file operations for reading or
 writing data, as well as seeking to various locations of the string.
-The main reason you might want to do this, is if you have some other
-library module that only provide an interface to file handles, and you
-want to keep all the stuff in memory.
+This is useful when you want to use a library module, that only
+provide an interface to file handles, on data you have in a string
+variable.
+
+Note that perl-5.8 and better has built in support for "in memory"
+files.  These are set up by passing a reference instead of a filename
+to the open() call, so the reason to still use this module is that it
+makes the code backwards compatible to older versions of perl.
 
 The C<IO::String> module provide an interface compatible with
 C<IO::File> as distributed with F<IO-1.20>, but the following methods
@@ -506,9 +511,6 @@ then it works as seek().
 
 =back
 
-One more difference compared to IO::Handle, is that the write() and
-syswrite() methods allow the length argument to be left out.
-
 =head1 BUGS
 
 The perl version < 5.6 the TIEHANDLE interface was still not complete.
@@ -518,7 +520,7 @@ details.
 
 =head1 SEE ALSO
 
-L<IO::File>, L<IO::Stringy>
+L<IO::File>, L<IO::Stringy>, L<perlfunc/open>
 
 =head1 COPYRIGHT
 
