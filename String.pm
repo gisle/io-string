@@ -77,6 +77,7 @@ sub close
     delete *$self->{buf};
     delete *$self->{pos};
     delete *$self->{lno};
+    untie *$self;
     $self;
 }
 
