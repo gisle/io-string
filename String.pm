@@ -310,12 +310,12 @@ sub stat
 {
     my $self = shift;
     return unless $self->opened;
-    return 1 if wantarray;
+    return 1 unless wantarray;
     my $len = length ${*$self->{buf}};
 
     return (
      undef, undef,  # dev, ino
-     0777,          # filemode
+     0666,          # filemode
      1,             # links
      $>,            # user id
      $),            # group id
@@ -430,6 +430,12 @@ format_top_name.
 The new() and the open() methods take different parameters since we
 open strings instead of file names.  The write() and syswrite() method
 allow the length parameter to be left out.
+
+=head1 BUGS
+
+The perl TIEHANDLE interface is still not complete.  There are quite a
+few file operations that will not yet invoke any method on the tied
+object.  See L<perltie> for details.
 
 =head1 SEE ALSO
 
