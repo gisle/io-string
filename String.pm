@@ -157,9 +157,9 @@ sub seek
     my $buf = *$self->{buf} || return;
     my $len = length($$buf);
     my $pos = *$self->{pos};
-    
+
     _init_seek_constants() unless defined $SEEK_SET;
-	
+
     if    ($whence == $SEEK_SET) { $pos = $off }
     elsif ($whence == $SEEK_CUR) { $pos += $off }
     elsif ($whence == $SEEK_END) { $pos = $len + $off }
@@ -348,6 +348,10 @@ sub stat
     );
 }
 
+sub FILENO {
+    return undef;   # XXX perlfunc says this means the file is closed
+}
+
 sub blocking {
     my $self = shift;
     my $old = *$self->{blocking} || 0;
@@ -375,7 +379,13 @@ my $notmuch = sub { return };
 *PRINTF = \&printf;
 *READ   = \&read;
 *WRITE  = \&write;
+*SEEK   = \&seek;
+*TELL   = \&getpos;
+*EOF    = \&eof;
 *CLOSE  = \&close;
+
+# This does not feel correct.
+#*OPEN   = \&open;
 
 sub string_ref
 {
@@ -416,6 +426,7 @@ IO::String - Emulate IO::File interface for in-core strings
  $pos = $io->getpos;
  $io->setpos(0);        # rewind
  $io->seek(-30, -1);
+ seek($io, 0, 0);
 
 =head1 DESCRIPTION
 
@@ -487,9 +498,10 @@ syswrite() methods allow the length argument to be left out.
 
 =head1 BUGS
 
-The perl TIEHANDLE interface is still not complete.  There are quite a
-few file operations that will not yet invoke any method on the tied
-object.  See L<perltie> for details.
+The perl version < 5.6 the TIEHANDLE interface was still not complete.
+If you use such a perl seek(), tell(), eof(), fileno(), binmode() will
+not do anything on a C<IO::String> handle.  See L<perltie> for
+details.
 
 =head1 SEE ALSO
 
