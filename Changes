@@ -1,5 +1,7 @@
 2004-04-01   Gisle Aas <gisle@ActiveState.com>
 
+   Release 1.05
+
    Fix handling of paragraph mode.
    <https://rt.cpan.org/Ticket/Display.html?id=5425>
 

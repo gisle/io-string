@@ -1,6 +1,6 @@
 package IO::String;
 
-# Copyright 1998-2003 Gisle Aas.
+# Copyright 1998-2004 Gisle Aas.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
@@ -8,7 +8,7 @@ package IO::String;
 require 5.005_03;
 use strict;
 use vars qw($VERSION $DEBUG $IO_CONSTANTS);
-$VERSION = "1.04";  # $Date$
+$VERSION = "1.05";  # $Date$
 
 use Symbol ();
 
