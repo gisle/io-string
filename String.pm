@@ -166,7 +166,7 @@ sub _init_seek_constants
 sub seek
 {
     my($self,$off,$whence) = @_;
-    my $buf = *$self->{buf} || return;
+    my $buf = *$self->{buf} || return 0;
     my $len = length($$buf);
     my $pos = *$self->{pos};
 
@@ -181,6 +181,7 @@ sub seek
     $pos = 0 if $pos < 0;
     $self->truncate($pos) if $pos > $len;  # extend file
     *$self->{pos} = $pos;
+    return 1;
 }
 
 sub pos
