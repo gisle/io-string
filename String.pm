@@ -7,8 +7,8 @@ package IO::String;
 
 require 5.005;      # actually 5.005_03 if Chip's tie patch goes in
 use strict;
-use vars qw($VERSION $DEBUG);
-$VERSION = "0.02";  # $Date$
+use vars qw($VERSION $DEBUG $IO_CONSTANTS);
+$VERSION = "0.03";  # $Date$
 
 use Symbol ();
 
@@ -133,6 +133,24 @@ sub printf
     $self->write(sprintf($fmt, @_));
 }
 
+
+my($SEEK_SET, $SEEK_CUR, $SEEK_END);
+
+sub _init_seek_constants
+{
+    if ($IO_CONSTANTS) {
+	require IO::Handle;
+	$SEEK_SET = &IO::Handle::SEEK_SET;
+	$SEEK_CUR = &IO::Handle::SEEK_CUR;
+	$SEEK_END = &IO::Handle::SEEK_END;
+    } else {
+	$SEEK_SET = 0;
+	$SEEK_CUR = 1;
+	$SEEK_END = 2;
+    }
+}
+
+
 sub seek
 {
     my($self,$off,$whence) = @_;
@@ -140,10 +158,11 @@ sub seek
     my $len = length($$buf);
     my $pos = *$self->{pos};
     
-    require IO;  # SEEK_SET
-    if    ($whence == &IO::SEEK_SET) { $pos = $off }
-    elsif ($whence == &IO::SEEK_CUR) { $pos += $off }
-    elsif ($whence == &IO::SEEK_END) { $pos = $len + $off }
+    _init_seek_constants() unless defined $SEEK_SET;
+	
+    if    ($whence == $SEEK_SET) { $pos = $off }
+    elsif ($whence == $SEEK_CUR) { $pos += $off }
+    elsif ($whence == $SEEK_END) { $pos = $len + $off }
     else { die "Bad whence ($whence)" }
     print "SEEK(POS=$pos,OFF=$off,LEN=$len)\n" if $DEBUG;
 
