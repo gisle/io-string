@@ -8,7 +8,7 @@ package IO::String;
 require 5.005_03;
 use strict;
 use vars qw($VERSION $DEBUG $IO_CONSTANTS);
-$VERSION = "1.05";  # $Date$
+$VERSION = "1.06";  # $Date$
 
 use Symbol ();
 

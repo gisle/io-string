@@ -1,3 +1,21 @@
+2004-11-05   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.06
+
+   Make seek() return TRUE when it succeed.  It used to
+   return the new position, but we want to be compatible with
+   the builtin seek().
+   Patch contributed by Kurt M. Brown <kurtb149@yahoo.com>
+
+   Make print() and printf() return TRUE even when printing
+   the empty string.  The used to return the lenght of the string
+   printed, but now they always return 1 to be compatible with
+   the builtins.
+
+   Make binmode() return TRUE unless layers are provided.
+
+
+
 2004-04-01   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.05
