@@ -128,7 +128,9 @@ sub print
 sub printf
 {
     my $self = shift;
-    $self->write(sprintf(@_));
+    print "PRINTF(@_)\n" if $DEBUG;
+    my $fmt = shift;
+    $self->write(sprintf($fmt, @_));
 }
 
 sub seek
