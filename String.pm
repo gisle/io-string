@@ -169,7 +169,6 @@ sub seek
 
     $pos = 0 if $pos < 0;
     $self->truncate($pos) if $pos > $len;  # extend file
-    *$self->{lno} = 0;
     *$self->{pos} = $pos;
 }
 
@@ -182,7 +181,6 @@ sub pos
 	my $buf = *$self->{buf};
 	my $len = $buf ? length($$buf) : 0;
 	$pos = $len if $pos > $len;
-	*$self->{lno} = 0;
 	*$self->{pos} = $pos;
     }
     $old;
