@@ -18,7 +18,7 @@ sub new
     my $self = bless Symbol::gensym(), ref($class) || $class;
     tie *$self, $self;
     $self->open(@_);
-    $self;
+    return $self;
 }
 
 sub open
@@ -37,7 +37,7 @@ sub open
     }
     *$self->{pos} = 0;
     *$self->{lno} = 0;
-    $self;
+    return $self;
 }
 
 sub pad
@@ -46,7 +46,7 @@ sub pad
     my $old = *$self->{pad};
     *$self->{pad} = substr($_[0], 0, 1) if @_;
     return "\0" unless defined($old) && length($old);
-    $old;
+    return $old;
 }
 
 sub dump
@@ -55,6 +55,7 @@ sub dump
     my $self = shift;
     print Data::Dumper->Dump([$self], ['*self']);
     print Data::Dumper->Dump([*$self{HASH}], ['$self{HASH}']);
+    return;
 }
 
 sub TIEHANDLE
@@ -64,7 +65,7 @@ sub TIEHANDLE
     my $class = shift;
     my $self = bless Symbol::gensym(), $class;
     $self->open(@_);
-    $self;
+    return $self;
 }
 
 sub DESTROY
@@ -85,13 +86,13 @@ sub close
 	untie *$self;
 	undef *$self;
     }
-    $self;
+    return 1;
 }
 
 sub opened
 {
     my $self = shift;
-    defined *$self->{buf};
+    return defined *$self->{buf};
 }
 
 sub getc
@@ -105,13 +106,14 @@ sub getc
 sub ungetc
 {
     my $self = shift;
-    $self->setpos($self->getpos() - 1)
+    $self->setpos($self->getpos() - 1);
+    return 1;
 }
 
 sub eof
 {
     my $self = shift;
-    length(${*$self->{buf}}) <= *$self->{pos};
+    return length(${*$self->{buf}}) <= *$self->{pos};
 }
 
 sub print
@@ -133,6 +135,7 @@ sub print
 	    $self->write(join("",@_));
 	}
     }
+    return 1;
 }
 *printflush = \*print;
 
@@ -142,6 +145,7 @@ sub printf
     print "PRINTF(@_)\n" if $DEBUG;
     my $fmt = shift;
     $self->write(sprintf($fmt, @_));
+    return 1;
 }
 
 
@@ -195,7 +199,7 @@ sub pos
 	$pos = $len if $pos > $len;
 	*$self->{pos} = $pos;
     }
-    $old;
+    return $old;
 }
 
 sub getpos { shift->pos; }
@@ -274,7 +278,7 @@ sub input_line_number
     my $self = shift;
     my $old = *$self->{lno};
     *$self->{lno} = shift if @_;
-    $old;
+    return $old;
 }
 
 sub truncate
@@ -289,7 +293,7 @@ sub truncate
     else {
 	$$buf .= ($self->pad x ($len - length($$buf)));
     }
-    $self;
+    return 1;
 }
 
 sub read
@@ -337,7 +341,7 @@ sub write
     }
     substr($$buf, $pos, $len) = substr($_[0], $off, $len);
     *$self->{pos} += $len;
-    $len;
+    return $len;
 }
 
 *sysread = \&read;
@@ -374,7 +378,7 @@ sub blocking {
     my $self = shift;
     my $old = *$self->{blocking} || 0;
     *$self->{blocking} = shift if @_;
-    $old;
+    return $old;
 }
 
 my $notmuch = sub { return };
@@ -408,7 +412,7 @@ my $notmuch = sub { return };
 sub string_ref
 {
     my $self = shift;
-    *$self->{buf};
+    return *$self->{buf};
 }
 *sref = \&string_ref;
 
