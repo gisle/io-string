@@ -2,4 +2,4 @@ MANIFEST
 Makefile.PL
 README
 String.pm
-
+t/truncate.t
