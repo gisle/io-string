@@ -1,14 +1,14 @@
 package IO::String;
 
-# Copyright 1998 Gisle Aas.
+# Copyright 1998-1999 Gisle Aas.
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 
-require 5.005;      # actually 5.005_03 if Chip's tie patch goes in
+require 5.005_03;
 use strict;
 use vars qw($VERSION $DEBUG $IO_CONSTANTS);
-$VERSION = "0.03";  # $Date$
+$VERSION = "1.00";  # $Date$
 
 use Symbol ();
 
@@ -423,32 +423,67 @@ The C<IO::String> module provide the C<IO::File> interface for in-core
 strings.  An C<IO::String> object can be attached to a string, and
 will make it possible to use the normal file operations for reading or
 writing data, as well as seeking to various locations of the string.
+The main reason you might want to do this, is if you have some other
+library module that only provide an interface to file handles, and you
+want to keep all the stuff in memory.
 
-The string_ref() method will return a reference to the string that is
-attached to the C<IO::String> object.  Mainly useful when you let the
-C<IO::String> create an internal buffer to write into.
+The C<IO::String> module provide an interface compatible with
+C<IO::File> as distributed with F<IO-1.20>, but the following methods
+are not available; new_from_fd, fdopen, format_write,
+format_page_number, format_lines_per_page, format_lines_left,
+format_name, format_top_name.
 
-There is a difference between the setpos() and seek() methods in that
-seek() will extend the string (with the specified padding) if you go
-to a location past the end, while setpos() will just snap back to the
-end.
+The following methods are specific for the C<IO::String> class:
+
+=over 4
+
+=item $io = IO::String->new( [$string] )
+
+The constructor returns a newly created C<IO::String> object.  It
+takes an optional argument which is the string to read from or write
+into.  If no $string argument is given, then an internal buffer
+(initially empty) is allocated.
+
+The C<IO::String> object returned will be tied to itself.  This means
+that you can use most perl IO builtins on it too; readline, <>, getc,
+print, printf, syswrite, sysread, close.
+
+=item $io->open( [$string] )
+
+Attach an existing IO::String object to some other $string, or
+allocate a new internal buffer (if no argument is given).  The
+position is reset back to 0.
+
+=item $io->string_ref
+
+This method will return a reference to the string that is attached to
+the C<IO::String> object.  Most useful when you let the C<IO::String>
+create an internal buffer to write into.
+
+=item $io->pad( [$char] )
 
 The pad() method makes it possible to specify the padding to use if
 the string is extended by either the seek() or truncate() methods.  It
 is a single character and defaults to "\0".
 
-In addition to getpos/setpos/tell/seek you can also use the pos()
-method to both set and get the current position within the string.
+=item $io->pos( [$newpos] )
 
-The C<IO::String> module provide an interface compatible with
-C<IO::File> as distributed with F<IO-1.20>.  The following methods are
-not available: new_from_fd, fdopen, format_write, format_page_number,
-format_lines_per_page, format_lines_left, format_name,
-format_top_name.
+Yet another interface for reading and setting the current read/write
+position within the string (the normal getpos/setpos/tell/seek
+methods are also available).  The pos() method will always return the
+old position, and if you pass it an argument it will set the new
+position.
 
-The new() and the open() methods take different parameters since we
-open strings instead of file names.  The write() and syswrite() method
-allow the length parameter to be left out.
+There is (deliberately) a difference between the setpos() and seek()
+methods in that seek() will extend the string (with the specified
+padding) if you go to a location past the end, while setpos() will
+just snap back to the end.  If truncate() is used to extend the string,
+then it works as seek().
+
+=back
+
+One more difference compared to IO::Handle, is that the write() and
+syswrite() methods allow the length argument to be left out.
 
 =head1 BUGS
 
@@ -462,7 +497,7 @@ L<IO::File>, L<IO::Stringy>
 
 =head1 COPYRIGHT
 
-Copyright 1998 Gisle Aas.
+Copyright 1998-1999 Gisle Aas.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
