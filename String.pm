@@ -384,6 +384,8 @@ my $notmuch = sub { return };
 *EOF    = \&eof;
 *CLOSE  = \&close;
 
+*BINMODE = $notmuch;
+
 # This does not feel correct.
 #*OPEN   = \&open;
 
