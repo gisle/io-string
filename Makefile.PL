@@ -1,4 +1,5 @@
-require 5.005;
+require 5.005_03;  # need self-tie patch
+
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
