@@ -15,6 +15,8 @@ $io = IO::String->new($str);
 print "not " unless @lines == 5 && $lines[1] eq "of a paragraph\n" && $. == 5;
 print "ok 1\n";
 
+use vars qw(@tmp);
+
 print "not " if defined($io->getline)  ||
                 (@tmp = $io->getlines) ||
                 defined(<$io>)         ||
