@@ -30,7 +30,8 @@ sub open
 	my $bufref = ref($_[0]) ? $_[0] : \$_[0];
 	$$bufref = "" unless defined $$bufref;
 	*$self->{buf} = $bufref;
-    } else {
+    }
+    else {
 	my $buf = "";
 	*$self->{buf} = \$buf;
     }
@@ -119,13 +120,16 @@ sub print
     if (defined $\) {
 	if (defined $,) {
 	    $self->write(join($,, @_).$\);
-	} else {
+	}
+	else {
 	    $self->write(join("",@_).$\);
 	}
-    } else {
+    }
+    else {
 	if (defined $,) {
 	    $self->write(join($,, @_));
-	} else {
+	}
+	else {
 	    $self->write(join("",@_));
 	}
     }
@@ -150,7 +154,8 @@ sub _init_seek_constants
 	$SEEK_SET = &IO::Handle::SEEK_SET;
 	$SEEK_CUR = &IO::Handle::SEEK_CUR;
 	$SEEK_END = &IO::Handle::SEEK_END;
-    } else {
+    }
+    else {
 	$SEEK_SET = 0;
 	$SEEK_CUR = 1;
 	$SEEK_END = 2;
@@ -170,7 +175,7 @@ sub seek
     if    ($whence == $SEEK_SET) { $pos = $off }
     elsif ($whence == $SEEK_CUR) { $pos += $off }
     elsif ($whence == $SEEK_END) { $pos = $len + $off }
-    else { die "Bad whence ($whence)" }
+    else                         { die "Bad whence ($whence)" }
     print "SEEK(POS=$pos,OFF=$off,LEN=$len)\n" if $DEBUG;
 
     $pos = 0 if $pos < 0;
@@ -279,7 +284,8 @@ sub truncate
     if (length($$buf) >= $len) {
 	substr($$buf, $len) = '';
 	*$self->{pos} = $len if $len < *$self->{pos};
-    } else {
+    }
+    else {
 	$$buf .= ($self->pad x ($len - length($$buf)));
     }
     $self;
@@ -297,7 +303,8 @@ sub read
     $len = $rem if $len > $rem;
     if (@_ > 2) { # read offset
 	substr($_[0],$_[2]) = substr($$buf, $pos, $len);
-    } else {
+    }
+    else {
 	$_[0] = substr($$buf, $pos, $len);
     }
     *$self->{pos} += $len;
