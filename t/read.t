@@ -1,4 +1,4 @@
-print "1..11\n";
+print "1..13\n";
 
 $str = <<EOT;
 This is an example
@@ -80,9 +80,17 @@ print "not " unless sysread($io, $buf, 3, 2) == 3 && $buf eq "Ths i";
 print "ok 9\n";
 
 $io->seek(-4, 2);
-print "not " unless read($io, $buf, 20) == 4 && $buf eq "e.\n\n";
+
+print "not " if $io->eof;
 print "ok 10\n";
 
-print "not " unless read($io, $buf, 20) == 0 && $buf eq "";
+print "not " unless read($io, $buf, 20) == 4 && $buf eq "e.\n\n";
 print "ok 11\n";
+
+print "not " unless read($io, $buf, 20) == 0 && $buf eq "";
+print "ok 12\n";
+
+print "not " unless $io->eof;
+print "ok 13\n";
+
 
