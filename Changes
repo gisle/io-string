@@ -1,3 +1,14 @@
+2002-10-06   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.03
+
+   Seek will not reset the input_line_number (aka $.) for the IO::String
+   object any more.
+
+   Workaround for core dump in close() in perl-5.6.x.
+
+
+
 2002-12-27   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.02
@@ -14,7 +25,7 @@
 
    Release 1.01
 
-   The eof() method had oposite logic.  Bug spotted by
+   The eof() method had opposite logic.  Bug spotted by
    Daniel Gruhl <dgruhl@almaden.ibm.com>
 
 
