@@ -221,9 +221,14 @@ sub getline
 	while (defined($c = $self->getc)) {
 	    if ($c eq "\n") {
 		$eol++;
-	    } elsif ($eol > 1) {
+		next if $eol > 2;
+	    }
+	    elsif ($eol > 1) {
 		$self->ungetc($c);
 		last;
+	    }
+	    else {
+		$eol = 0;
 	    }
 	    $para .= $c;
 	}
