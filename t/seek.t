@@ -1,4 +1,4 @@
-print "1..9\n";
+print "1..10\n";
 
 $str = "abcd";
 
@@ -50,4 +50,10 @@ print "ok 8\n";
 $io->seek(0,0);
 print "not " unless all_pos($io, 0);
 print "ok 9\n";
+
+if ($] >= 5.006) {
+   seek($io, 1, 0);
+   print "not " unless all_pos($io, 1);
+}
+print "ok 10\n";
 
