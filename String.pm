@@ -453,7 +453,9 @@ The following methods are specific for the C<IO::String> class:
 
 =over 4
 
-=item $io = IO::String->new( [$string] )
+=item $io = IO::String->new
+
+=item $io = IO::String->new( $string )
 
 The constructor returns a newly created C<IO::String> object.  It
 takes an optional argument which is the string to read from or write
@@ -464,7 +466,9 @@ The C<IO::String> object returned will be tied to itself.  This means
 that you can use most perl IO builtins on it too; readline, <>, getc,
 print, printf, syswrite, sysread, close.
 
-=item $io->open( [$string] )
+=item $io->open
+
+=item $io->open( $string )
 
 Attach an existing IO::String object to some other $string, or
 allocate a new internal buffer (if no argument is given).  The
@@ -476,13 +480,17 @@ This method will return a reference to the string that is attached to
 the C<IO::String> object.  Most useful when you let the C<IO::String>
 create an internal buffer to write into.
 
-=item $io->pad( [$char] )
+=item $io->pad
+
+=item $io->pad( $char )
 
 The pad() method makes it possible to specify the padding to use if
 the string is extended by either the seek() or truncate() methods.  It
 is a single character and defaults to "\0".
 
-=item $io->pos( [$newpos] )
+=item $io->pos
+
+=item $io->pos( $newpos )
 
 Yet another interface for reading and setting the current read/write
 position within the string (the normal getpos/setpos/tell/seek
