@@ -51,7 +51,7 @@ print "ok 2\n";
     local $/ = "is";
     $io->setpos(0);
     @lines = ();
-    my $no = 0;
+    my $no = $io->input_line_number;
     my $err;
     while (<$io>) {
 	push(@lines, $_);
