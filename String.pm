@@ -95,6 +95,14 @@ sub opened
     return defined *$self->{buf};
 }
 
+sub binmode
+{
+    my $self = shift;
+    return 1 unless @_;
+    # XXX don't know much about layers yet :-(
+    return 0;
+}
+
 sub getc
 {
     my $self = shift;
@@ -405,8 +413,7 @@ my $notmuch = sub { return };
 *TELL   = \&getpos;
 *EOF    = \&eof;
 *CLOSE  = \&close;
-
-*BINMODE = $notmuch;
+*BINMODE = \&binmode;
 
 
 sub string_ref
