@@ -135,7 +135,7 @@ sub seek
 {
     my($self,$off,$whence) = @_;
     my $buf = *$self->{buf} || return;
-    my $len = length($buf);
+    my $len = length($$buf);
     my $pos = *$self->{pos};
     
     require IO;  # SEEK_SET
@@ -143,6 +143,7 @@ sub seek
     elsif ($whence == &IO::SEEK_CUR) { $pos += $off }
     elsif ($whence == &IO::SEEK_END) { $pos = $len + $off }
     else { die "Bad whence ($whence)" }
+    print "SEEK(POS=$pos,OFF=$off,LEN=$len)\n" if $DEBUG;
 
     $pos = 0 if $pos < 0;
     $self->truncate($pos) if $pos > $len;  # extend file
