@@ -4,6 +4,10 @@
 
    Complemented the tiehandle interface with SEEK/TELL/EOF/BINMODE.
 
+   Make close($io) untie the object.  This make it possible
+   to avoid memory leaks in perl-5.8 which seems to have problems
+   with self-ties.  Based on patch by Eric Kolve <ekolve@attbi.com>.
+
 
 
 2000-01-28   Gisle Aas <gisle@aas.no>
