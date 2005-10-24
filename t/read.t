@@ -1,4 +1,4 @@
-print "1..13\n";
+print "1..17\n";
 
 $str = <<EOT;
 This is an example
@@ -94,3 +94,16 @@ print "not " unless $io->eof;
 print "ok 13\n";
 
 
+$io->setpos(0);
+print "not " if defined(read($io, $buf, -1));
+print "ok 14\n";
+
+print "not " unless read($io, $buf, 0) == 0;
+print "ok 15\n";
+
+print "not " unless read($io, $buf, 4) == 4 && $buf eq "This";
+print "ok 16\n";
+
+$str = "";
+print "not " if defined(read($io, $buf, 4));
+print "ok 17\n";

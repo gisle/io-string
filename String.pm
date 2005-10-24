@@ -308,12 +308,13 @@ sub read
 {
     my $self = shift;
     my $buf = *$self->{buf};
-    return unless $buf;
+    return undef unless $buf;
 
     my $pos = *$self->{pos};
     my $rem = length($$buf) - $pos;
     my $len = $_[1];
     $len = $rem if $len > $rem;
+    return undef if $len < 0;
     if (@_ > 2) { # read offset
 	substr($_[0],$_[2]) = substr($$buf, $pos, $len);
     }
