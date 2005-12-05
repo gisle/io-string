@@ -3,6 +3,7 @@ MANIFEST
 Makefile.PL
 README
 String.pm
+t/close.t
 t/para.t
 t/read.t
 t/seek.t
