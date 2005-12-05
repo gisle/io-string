@@ -1,3 +1,13 @@
+2005-12-05   Gisle Aas <gisle@ActiveState.com>
+
+   Release 1.08
+
+   The untie code in close() just seemed wrong, so just
+   remove it.  The object still seems to get cleaned up
+   on various versions perl.
+
+
+
 2005-10-24   Gisle Aas <gisle@ActiveState.com>
 
    Release 1.07
