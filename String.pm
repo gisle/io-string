@@ -79,7 +79,7 @@ sub close
     delete *$self->{buf};
     delete *$self->{pos};
     delete *$self->{lno};
-    if ($] >= 5.006 && $[ < 5.007) {
+    if ($] >= 5.006 && $] < 5.007) {
 	# perl-5.6.x segfaults on untie, so avoid it
     }
     else {
